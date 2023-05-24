@@ -1,5 +1,6 @@
 import sys
 import json
+import yaml
 
 
 def xml_to_json(xml_path, json_path):
@@ -34,7 +35,8 @@ def json_to_yaml(json_path, yaml_path):
 def yaml_to_json(yaml_path, json_path):
     try:
         #krok4
-        data=0#zła kolejność tasków dla mojego rozwiązania...
+        with open(yaml_path, "r") as file:
+            data = yaml.safe_load(file)
         #krok3
         with open(json_path, "w") as file:
             json.dump(data, file, indent=4)
