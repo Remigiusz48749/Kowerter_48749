@@ -24,11 +24,9 @@ jobs:
       - name: Install dependencies
         run: pip install pyinstaller
       
-      - name: Install json library in python
-        run: pip install json
-      
-      - name: Install pyyaml library in python
-        run: pip install pyyaml
+      - name: Install library in python
+        run: |
+         pip install pyyaml
       
       - name: Build EXE
         run: pyinstaller --onefile --name Konwerter Konwerter.py
