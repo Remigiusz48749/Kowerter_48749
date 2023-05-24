@@ -1,17 +1,31 @@
 import sys
 import json
 import yaml
+import xml.etree.ElementTree as ET
 
 
 def xml_to_json(xml_path, json_path):
     try:
-        # krok6
-        data = 0  # zła kolejność tasków dla mojego rozwiązania...
-        # krok3
+        tree = ET.parse(xml_path)
+        root = tree.getroot()
+        data = {}
+        data[root.tag] = xml_to_slownik(root)
         with open(json_path, "w") as file:
             json.dump(data, file, indent=4)
     except:
         print("Coś poszło nie tak. Twój plik może być uszkodzony")
+
+
+def xml_to_slownik(element):
+    result = {}
+    for child in element:
+        if child.tag in result:
+            if not isinstance(result[child.tag], list):
+                result[child.tag] = [result[child.tag]]
+            result[child.tag].append(xml_to_slownik(child))
+        else:
+            result[child.tag] = xml_to_slownik(child) if len(child) > 0 else child.text
+    return result
 
 
 def json_to_xml(json_path, xml_path):
@@ -35,10 +49,8 @@ def json_to_yaml(json_path, yaml_path):
 
 def yaml_to_json(yaml_path, json_path):
     try:
-        #krok4
         with open(yaml_path, "r") as file:
             data = yaml.safe_load(file)
-        #krok3
         with open(json_path, "w") as file:
             json.dump(data, file, indent=4)
     except:
