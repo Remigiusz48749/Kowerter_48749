@@ -27,7 +27,8 @@ def json_to_yaml(json_path, yaml_path):
     try:
         with open(json_path, "r") as file:
             data = json.load(file)
-        #nie zakończone
+        with open(json_path, "w") as file:
+            json.dump(data, file, indent=4)
     except:
         print("Coś poszło nie tak. Twój plik może być uszkodzony")
 
