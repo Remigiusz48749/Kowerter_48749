@@ -32,9 +32,27 @@ def json_to_xml(json_path, xml_path):
     try:
         with open(json_path, "r") as file:
             data = json.load(file)
-        # nie zakończone
+        root_name = list(data.keys())[0]
+        root = ET.Element(root_name)
+        slownik_to_xml(data[root_name], root)
+        tree = ET.ElementTree(root)
+        tree.write(xml_path, encoding="utf-8", xml_declaration=True)
     except:
         print("Coś poszło nie tak. Twój plik może być uszkodzony")
+
+
+def slownik_to_xml(data, parent):
+    for key, value in data.items():
+        if isinstance(value, dict):
+            element = ET.SubElement(parent, key)
+            slownik_to_xml(value, element)
+        elif isinstance(value, list):
+            for item in value:
+                element = ET.SubElement(parent, key)
+                slownik_to_xml(item, element)
+        else:
+            element = ET.SubElement(parent, key)
+            element.text = str(value)
 
 
 def json_to_yaml(json_path, yaml_path):
