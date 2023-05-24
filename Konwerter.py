@@ -1,4 +1,5 @@
 import sys
+import json
 
 
 def xml_to_json(xml_path, json_path):
@@ -6,7 +7,11 @@ def xml_to_json(xml_path, json_path):
 
 
 def json_to_xml(json_path, xml_path):
-    pass
+    try:
+        with open(json_path, "r") as file:
+            data = json.load(file)
+    except:
+        print("Coś poszło nie tak. Twój plik może być uszkodzony")
 
 
 def json_to_yaml(json_path, yaml_path):
